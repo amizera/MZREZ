@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Auth, Hub } from 'aws-amplify';
+import { width } from '@mui/system';
 
 
 
@@ -112,7 +113,7 @@ import { Auth, Hub } from 'aws-amplify';
                             <ListItemIcon>
                                 <PersonIcon sx={{ color: theme.palette.primary.main}}/>
                             </ListItemIcon>
-                            <ListItemText primary="Logowanie" />
+                            <ListItemText primary="Obiekty" />
                         </ListItem>
                         <Divider />
                         {
@@ -133,11 +134,12 @@ import { Auth, Hub } from 'aws-amplify';
             );
 
             return (
-                <div>
-                    <div id="main-background" />
+                <Box >
+                   
                     <div id="main-layout">
                         <ThemeProvider theme={theme}>
-                            <Box>
+                            <Box sx={{display: 'block'}}>
+
                                 <Box sx={{ display: { xs: 'block',  md: 'none' } }} >
                                     <AppBar position="fixed" color="secondary">
                                         <Toolbar>
@@ -154,6 +156,7 @@ import { Auth, Hub } from 'aws-amplify';
                                         </Toolbar>
                                     </AppBar>
                                 </Box>
+
                                 <Box>
                                     <Box sx={{ display: { sm: 'none', xs: 'block' } }} >
                                     
@@ -173,10 +176,10 @@ import { Auth, Hub } from 'aws-amplify';
                                             }}
                                         >
                                             {drawer}
-
                                         </Drawer>
                                     
                                     </Box>
+
                                     <Box sx={{ display: { xs: 'none', md: 'block'  } }} >
                                     
                                         <Drawer
@@ -192,20 +195,20 @@ import { Auth, Hub } from 'aws-amplify';
                                             }}
                                         >
                                             {drawer}
-
                                         </Drawer>
                                     
                                     </Box>
                                 </Box>
-                                <Box width="100%" className="mainContent" sx={{ mx: "auto",  ml: {md: drawerWidth/16 }}}>
-                                <Box  className="mainContent">
-                                    {this.props.children}
-                                </Box>
+
+                                <Box width="100%" className="mainContent" sx={{ ml: { xs: 2, md: 6 }, mt: 2}}>
+                                    
+                                        {this.props.children}
+                                    
                                 </Box>
                             </Box>
                         </ThemeProvider>
                     </div>
-                </div>
+                </Box>
             );
         }
     }

@@ -48,9 +48,25 @@
               "userPoolId": "authmzrezb0342839"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2023-12-09T10:26:54.332Z",
+                "description": "firstQL"
+              }
+            }
+          ]
         }
       }
+    }
+  },
+  "storage": {
+    "imagesStore01": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

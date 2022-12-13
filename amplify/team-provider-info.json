@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "mzrezb0342839": {}
+      },
+      "api": {
+        "mzrez": {}
+      },
+      "storage": {
+        "imagesStore01": {}
       }
     }
   }
