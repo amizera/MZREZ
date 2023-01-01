@@ -166,8 +166,6 @@ class UploadImage extends Component {
         const child = this.props.children
         const { uploading, imgToUpload, imgUploaded } = this.state
         const uploadFile = this.handleAdd
-        //const 
-        //console.log(this.props.render)
 
     return (
         React.Children.map(child, (child) => {

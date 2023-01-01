@@ -28,8 +28,8 @@ type Locations @model @auth(rules: [{allow: public}]) {
 type Images @model @auth(rules: [{allow: public}]) {
   id: ID! @primaryKey
   owner: ID!
-  name: String!
-  description: String!
-  online: Boolean!
+  name: String
+  description: String
+  online: Boolean
   Locations: [Locations] @manyToMany(relationName: "ImagesLocations")
 }

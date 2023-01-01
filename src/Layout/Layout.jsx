@@ -5,17 +5,17 @@ import { Menu as MenuIcon, Person as PersonIcon, Help } from '@mui/icons-materia
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import './Layout.scss';
-import { ProjectsRoute, HomeRoute } from '../Routing';
+import { LacalizationsRoute, HomeRoute } from '../Routing';
 import { Link } from "react-router-dom";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Auth, Hub } from 'aws-amplify';
 import { width } from '@mui/system';
+import { Flex } from '@aws-amplify/ui-react';
 
 
 
     const drawerWidth = 250;
-    const drawerMargin = drawerWidth / 2;
     const color = 'red';
     
     const theme = createTheme({
@@ -108,12 +108,12 @@ import { width } from '@mui/system';
                         <Divider />
 
                         <ListItem 
-                        button component={Link} to={ProjectsRoute} 
+                        button component={Link} to={LacalizationsRoute} 
                         onClick={mobileOpen ? this.handleDrawerToggle : null}>
                             <ListItemIcon>
                                 <PersonIcon sx={{ color: theme.palette.primary.main}}/>
                             </ListItemIcon>
-                            <ListItemText primary="Obiekty" />
+                            <ListItemText primary="Lokalizacje" />
                         </ListItem>
                         <Divider />
                         {
@@ -200,7 +200,7 @@ import { width } from '@mui/system';
                                     </Box>
                                 </Box>
 
-                                <Box width="100%" className="mainContent" sx={{ ml: { xs: 2, md: 6 }, mt: 2}}>
+                                <Box className="mainContent" maxWidth='md' style={{ borderRadius: 5, padding: 0}} sx={{  ml: { xs: 2, md: (drawerWidth/8)+2 }, mr: 2, mt: {xs:9, md: 2} }} >
                                     
                                         {this.props.children}
                                     

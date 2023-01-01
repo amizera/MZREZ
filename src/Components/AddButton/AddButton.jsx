@@ -21,7 +21,7 @@ class AddButton extends Component {
                 />
                 <label htmlFor="button-add-picture">
                     <Button variant="contained"
-                        size="large"
+                        size="small"
                         color="secondary"
                         component="span"
                         disabled={uploading}
@@ -35,7 +35,7 @@ class AddButton extends Component {
                             </Box> :
                             null
                     }
-                    { !uploading ? <AddAPhotoIcon /> : null }
+                    { !uploading ? <AddAPhotoIcon sx={{ fontSize: "40px" }} /> : null }
                     </Button>
                 </label>
             </Box>

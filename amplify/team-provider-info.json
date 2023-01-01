@@ -20,6 +20,12 @@
       },
       "storage": {
         "imagesStore01": {}
+      },
+      "function": {
+        "S3Trigger70ff47e0": {
+          "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
+          "s3Key": "amplify-builds/S3Trigger70ff47e0-4c78496174512b43526d-build.zip"
+        }
       }
     }
   }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import Home from './Pages/Home/Home'
-import Projects from './Pages/Projects/Projects'
+import Lacalizations from './Pages/Lacalizations/Lacalizations'
 import Layout from './Layout/Layout';
 
 
 export const HomeRoute = "/";
-export const ProjectsRoute = "/projects/";
+export const LacalizationsRoute = "/lokalizacje/";
 
 class Routing extends React.Component {
     render() {
@@ -14,7 +14,7 @@ class Routing extends React.Component {
             <Layout>
                 <Routes>
                     <Route path={HomeRoute} element={<Home/>} />
-                    <Route path={ProjectsRoute} element={<Projects/>} />
+                    <Route path={LacalizationsRoute} element={<Lacalizations/>} />
                 </Routes>
             </Layout >
         );
