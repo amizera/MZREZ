@@ -63,8 +63,6 @@ export default function Lacalizations() {
         ...prevLocation,
         [key]: [...prevLocation.images, value]
       }))
-
-      
       console.log("index true: " + index)
     }
 
