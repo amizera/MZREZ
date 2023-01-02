@@ -59,15 +59,17 @@ export default function Lacalizations() {
       console.log("index is false")
     }
     else {
+      location.images.map(
+        (images, imagesIndex) => console.log('MAP => index:' + imagesIndex + ' value: ' + images ) )
+      
+        
+     /*
       setLocation(prevLocation => ({
         ...prevLocation,
         [key]: [...prevLocation.images, value]
-      }))
-      console.log("index true: " + index)
+      }))*/
+      console.log("index is true: " + index)
     }
-
-    
-
     console.log("index: " + index + " key: " + key + " value: " + value)
     console.log(location)
   }
