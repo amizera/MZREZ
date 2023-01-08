@@ -100,7 +100,7 @@ class UploadImage extends Component {
             .catch(err => console.log(err));
     }
 
-    handleAdd = async (event) => {
+    handleUpload = async (event) => {
 
         event.persist();
         // Check there is some files to upload
@@ -115,10 +115,11 @@ class UploadImage extends Component {
     
         // Loop through all selected files 
         for (let i = 0; i < filesLength; i++) {
-            this.setState({ imgUploaded: i })
+            this.setState({ imgUploaded: i+1 })
             
             const file = event.target.files[i];
-            const filename = file.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+            
+            const filename = file.name.toLowerCase().replace(/\.[^/.]+$/, "").replace(/ /g, '-').replace(/[^\w-]+/g, '');
             const fileExtension = file.name.split('.').pop();
             // Define the image name
             const rootName = /* username + '/' +*/ filename + '-' + uuid();
@@ -154,6 +155,7 @@ class UploadImage extends Component {
             await this.pushImgToS3(fileThumb, thumbnailImgName)
             await this.pushImgToS3(fileMain, mainImgName)
         }
+
         this.setState({
             uploading: false,
             imgToUpload: 0,
