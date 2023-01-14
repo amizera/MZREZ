@@ -50,7 +50,7 @@ export  function ImageBox(props) {
       backgroundColor: props.isHeld ? "#59E391" : "white"
   }
   */
-  //console.log(props.imageOrder)
+  //console.log(props)
 
   if (document.getElementById(id + 'preview') != null) {
     var preview = document.getElementById(id + 'preview').style.backgroundImage 
@@ -71,8 +71,8 @@ export  function ImageBox(props) {
       border: '1px solid',
       borderColor: (theme) =>
         theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
-      p: 1,
-      m: 1,
+      p: 0,
+      m: 0,
       borderRadius: 2,
       fontSize: '0.875rem',
       fontWeight: '700',
@@ -95,7 +95,7 @@ export  function ImageBox(props) {
         color="secondary"
         component="span"
         >
-        { preview ? null : <AddAPhotoIcon sx={{ fontSize: "40px" }} /> }
+        { preview ? null : <AddAPhotoIcon sx={{ fontSize: "60px" }} /> }
         </Button>
       </label>
       

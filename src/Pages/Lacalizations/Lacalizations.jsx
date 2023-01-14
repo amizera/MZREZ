@@ -1,92 +1,87 @@
 
 import React, { Component } from 'react';
 
-import { Amplify, Storage, Auth } from 'aws-amplify';
+import { Amplify, Storage, Auth, API } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { Container, darkScrollbar, Typography} from '@mui/material';
 import Stack from '@mui/material/Stack';
 
-import {data} from '../../data';
 import {nanoid} from "nanoid";
 
 import '@aws-amplify/ui-react/styles.css';
 import './Lacalizations.css';
-
+import { graphqlOperation } from 'aws-amplify';
 import awsExports from '../../aws-exports';
 Amplify.configure(awsExports);
 
-import { Box, Button } from '@mui/material';
-
-import AddButton from '../../Components/AddButton/AddButton'
-import UploadImage from '../../Components/UploadImage/UploadImage';
-
 import { formFields } from '../../Config/AuthConfig';
-import { AddAPhoto as AddAPhotoIcon, Description } from '@mui/icons-material';
-
 import ListLocalizations from './ListLocalizations';
 import AddLocationForm from './AddLocationForm';
+import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
 
+import { createApartment } from '../../graphql/mutations';
+
+var apartamentToDel = ''
 const boxMargin = 1;
+const apartmenty = await API.graphql({ query: queries.apartments });
+
 
 export default function Lacalizations() {
 
-  const [location, setLocation] = React.useState({
-    id: nanoid(),
-    name: "Nazwij lokalizację",
-    description: "Tutaj musi być opis lokalizacji",
-    images: ["/static/images/11.jpg","/static/images/12.jpg","/static/images/13.jpg"]
-  })
-  
-  const [locations, setLocations] = React.useState(
-      () => JSON.parse(localStorage.getItem("locations")) || []
+  const [apartments, setApartments] = React.useState(
+    apartmenty.data.listApartments.items || []
   )
 
-  const [currentLocationId, setCurrentLocationId] = React.useState(
-      (locations[0] && locations[0].id) || ""
-  )
+  const handleAddApartments = async value => {
+    const result = await API.graphql(graphqlOperation( createApartment, {input: value} ))
+    setApartments(prevApartment => [...prevApartment, result.data.createApartment])
+  }
 
-  React.useEffect(() => {
-      localStorage.setItem("locations", JSON.stringify(locations))
-  }, [locations])
+  function handleDeleteApartments() {
 
-  function updateLocation(key, value, index) {
+  }
 
+  function handleUpdateAparmets() {
+
+  }
+
+  function updateLocation(key, value, filename, index) {
+    const indexToUpdate = index
     if (!index) {
-      setLocation(prevLocation => ({
-        ...prevLocation,
+      setLocation(prevApartment => ({
+        ...prevApartment,
         [key]: value
       }))
-      console.log("index is false")
     }
     else {
-      location.images.map(
-        (images, imagesIndex) => console.log('MAP => index:' + imagesIndex + ' value: ' + images ) )
-      
-        
-     /*
-      setLocation(prevLocation => ({
-        ...prevLocation,
-        [key]: [...prevLocation.images, value]
-      }))*/
-      console.log("index is true: " + index)
+      const newState = location.images.map((obj, imagesIndex) => {
+        //console.log(obj)
+        // 👇️ if id equals replace object
+        if (imagesIndex == indexToUpdate) {
+         return { imgFilname: filename, imgFile: value}
+        }
+        return obj;
+      })
+      setLocation(prevApartment => ({
+        ...prevApartment,
+        [key]: newState
+      })) 
     }
-    console.log("index: " + index + " key: " + key + " value: " + value)
-    console.log(location)
   }
 
-  function addLocation(location) {
-    // Put the most recently-modified note at the top
-    setLocations(prevLocations => [location, ...prevLocations])
-    console.log("vvv tmp loc vvv")
-    console.log(location)
-    console.log("AAA tmp loc AAA")
-  }
+  React.useEffect(() => {
+    async function getApartments() {
+      const res = await API.graphql({ query: queries.apartments })
+      const data = res.data.listApartments.items
+      setApartments(data)
+    }
+    getApartments()
+  }, [])
 
-  function deleteLocation(event, locationId) {
-    event.stopPropagation()
-    setLocations(oldLocation => oldLocation.filter(location => location.id !== locationId))
-    console.log("locationID: " + locationId )
-  }
+  const [currentApartmentsId, setCurrentApartmentsId] = React.useState(
+    (apartments[0] && apartments[0].id) || ""
+)
 
   function findCurrentLocation() {
     return locations.find(locations => {
@@ -94,37 +89,37 @@ export default function Lacalizations() {
     }) || locations[0]
   }
 
+  async function deleteApartment(apartmentId) {
+    const apartmentToDel = {id: apartmentId }
+    const deleteApartment = await API.graphql({ query: mutations.deleteApartment, variables: {input: apartmentToDel} })
+    const tmpApartments = await API.graphql({ query: queries.apartments });
+    setApartments(tmpApartments.data.listApartments.items || [])
+  }
 
-  const displayLocations = locations.map(location => (
+  const listApartments =  apartments.map(apart => ( 
     <ListLocalizations 
-      key={location.id} 
-      id={location.id}
-      name={location.name} 
-      description={location.description} 
-      cover={location.images[0]}
-      deleteLocation={deleteLocation}
-      setCurrentLocationId={setCurrentLocationId}
-    />
-  ))
+    key={apart.id} 
+    id={apart.id}
+    name={apart.name} 
+    description={apart.description} 
+    cover={apart.image[0]}
+    deleteApartment={deleteApartment}
+    //setCurrentApartmentsId={setCurrentApartmentsId}
+    //locations={apartments}
+  />
+   )) 
 
   return (
     <Authenticator formFields={formFields} >
     {({ signOut, user }) => (
       <Stack spacing={2}>
         <Container sx={{mt: 4}}>
-          {displayLocations}
+        {listApartments}
         </Container>
 
         <Container sx={{minWidth: 380}}>
           <AddLocationForm 
-          locations={locations}
-          location={location}
-          addLocation={addLocation}
-          updateLocation={updateLocation}
-          //currentLocation={findCurrentLocation()}
-          
-
-          //setCurrentLocationId={setCurrentLocationId}
+          handleAddApartments={handleAddApartments}
           />
         </Container>
       </Stack>

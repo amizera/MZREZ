@@ -1,435 +1,191 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createUsers = /* GraphQL */ `
-  mutation CreateUsers(
-    $input: CreateUsersInput!
-    $condition: ModelUsersConditionInput
+export const createApartment = /* GraphQL */ `
+mutation CreateApartment($input: CreateApartmentInput!) {
+  createApartment(input: $input) {
+    id
+    name
+    description
+    location
+    price
+    capacity
+    image
+  }
+}
+`
+
+export const deleteApartment = /* GraphQL */ `
+mutation DeleteApartment($input: DeleteApartmentInput!) {
+  deleteApartment(input: $input) {
+    id
+    name
+    description
+    location
+    price
+    capacity
+    image
+  }
+}
+`
+
+export const updateApartment = /* GraphQL */ `
+  mutation UpdateApartment(
+    $id: ID!
+    $name: String
+    $description: String
+    $location: String
+    $price: Float
+    $capacity: Int
+    $image: String
   ) {
-    createUsers(input: $input, condition: $condition) {
+    updateApartment(
+      id: $id
+      name: $name
+      description: $description
+      location: $location
+      price: $price
+      capacity: $capacity
+      image: $image
+    ) {
       id
-      login
       name
-      surename
-      createdAt
-      updatedAt
+      description
+      location
+      price
+      capacity
+      image
     }
   }
 `;
-export const updateUsers = /* GraphQL */ `
-  mutation UpdateUsers(
-    $input: UpdateUsersInput!
-    $condition: ModelUsersConditionInput
+
+
+export const createReservation = /* GraphQL */ `
+  mutation CreateReservation(
+    $apartmentId: ID!
+    $guestId: ID!
+    $startDate: String!
+    $endDate: String!
   ) {
-    updateUsers(input: $input, condition: $condition) {
+    createReservation(
+      apartmentId: $apartmentId
+      guestId: $guestId
+      startDate: $startDate
+      endDate: $endDate
+    ) {
       id
-      login
-      name
-      surename
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteUsers = /* GraphQL */ `
-  mutation DeleteUsers(
-    $input: DeleteUsersInput!
-    $condition: ModelUsersConditionInput
-  ) {
-    deleteUsers(input: $input, condition: $condition) {
-      id
-      login
-      name
-      surename
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createReservations = /* GraphQL */ `
-  mutation CreateReservations(
-    $input: CreateReservationsInput!
-    $condition: ModelReservationsConditionInput
-  ) {
-    createReservations(input: $input, condition: $condition) {
-      id
-      locationID
-      userID
+      apartment {
+        id
+        name
+        description
+        location
+        price
+        capacity
+        image
+      }
+      guest {
+        id
+        name
+        email
+        phone
+      }
       startDate
       endDate
-      notes
-      Locations {
-        id
-        name
-        description
-        rules
-        images
-        imagess {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      Users {
-        id
-        login
-        name
-        surename
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      reservationsLocationsId
-      reservationsUsersId
     }
   }
 `;
-export const updateReservations = /* GraphQL */ `
-  mutation UpdateReservations(
-    $input: UpdateReservationsInput!
-    $condition: ModelReservationsConditionInput
+export const updateReservation = /* GraphQL */ `
+  mutation UpdateReservation(
+    $id: ID!
+    $apartmentId: ID
+    $guestId: ID
+    $startDate: String
+    $endDate: String
   ) {
-    updateReservations(input: $input, condition: $condition) {
+    updateReservation(
+      id: $id
+      apartmentId: $apartmentId
+      guestId: $guestId
+      startDate: $startDate
+      endDate: $endDate
+    ) {
       id
-      locationID
-      userID
+      apartment {
+        id
+        name
+        description
+        location
+        price
+        capacity
+        image
+      }
+      guest {
+        id
+        name
+        email
+        phone
+      }
       startDate
       endDate
-      notes
-      Locations {
-        id
-        name
-        description
-        rules
-        images
-        imagess {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      Users {
-        id
-        login
-        name
-        surename
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      reservationsLocationsId
-      reservationsUsersId
     }
   }
 `;
-export const deleteReservations = /* GraphQL */ `
-  mutation DeleteReservations(
-    $input: DeleteReservationsInput!
-    $condition: ModelReservationsConditionInput
-  ) {
-    deleteReservations(input: $input, condition: $condition) {
+export const deleteReservation = /* GraphQL */ `
+  mutation DeleteReservation($id: ID!) {
+    deleteReservation(id: $id) {
       id
-      locationID
-      userID
+      apartment {
+        id
+        name
+        description
+        location
+        price
+        capacity
+        image
+      }
+      guest {
+        id
+        name
+        email
+        phone
+      }
       startDate
       endDate
-      notes
-      Locations {
-        id
-        name
-        description
-        rules
-        images
-        imagess {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      Users {
-        id
-        login
-        name
-        surename
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      reservationsLocationsId
-      reservationsUsersId
     }
   }
 `;
-export const createLocations = /* GraphQL */ `
-  mutation CreateLocations(
-    $input: CreateLocationsInput!
-    $condition: ModelLocationsConditionInput
-  ) {
-    createLocations(input: $input, condition: $condition) {
+export const createGuest = /* GraphQL */ `
+  mutation CreateGuest($name: String!, $email: String!, $phone: String!) {
+    createGuest(name: $name, email: $email, phone: $phone) {
       id
       name
-      description
-      rules
-      images
-      imagess {
-        items {
-          id
-          locationsId
-          imagesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
+      email
+      phone
     }
   }
 `;
-export const updateLocations = /* GraphQL */ `
-  mutation UpdateLocations(
-    $input: UpdateLocationsInput!
-    $condition: ModelLocationsConditionInput
+export const updateGuest = /* GraphQL */ `
+  mutation UpdateGuest(
+    $id: ID!
+    $name: String
+    $email: String
+    $phone: String
   ) {
-    updateLocations(input: $input, condition: $condition) {
+    updateGuest(id: $id, name: $name, email: $email, phone: $phone) {
       id
       name
-      description
-      rules
-      images
-      imagess {
-        items {
-          id
-          locationsId
-          imagesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
+      email
+      phone
     }
   }
 `;
-export const deleteLocations = /* GraphQL */ `
-  mutation DeleteLocations(
-    $input: DeleteLocationsInput!
-    $condition: ModelLocationsConditionInput
-  ) {
-    deleteLocations(input: $input, condition: $condition) {
+export const deleteGuest = /* GraphQL */ `
+  mutation DeleteGuest($id: ID!) {
+    deleteGuest(id: $id) {
       id
       name
-      description
-      rules
-      images
-      imagess {
-        items {
-          id
-          locationsId
-          imagesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createImages = /* GraphQL */ `
-  mutation CreateImages(
-    $input: CreateImagesInput!
-    $condition: ModelImagesConditionInput
-  ) {
-    createImages(input: $input, condition: $condition) {
-      id
-      owner
-      name
-      description
-      online
-      Locations {
-        items {
-          id
-          locationsId
-          imagesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateImages = /* GraphQL */ `
-  mutation UpdateImages(
-    $input: UpdateImagesInput!
-    $condition: ModelImagesConditionInput
-  ) {
-    updateImages(input: $input, condition: $condition) {
-      id
-      owner
-      name
-      description
-      online
-      Locations {
-        items {
-          id
-          locationsId
-          imagesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteImages = /* GraphQL */ `
-  mutation DeleteImages(
-    $input: DeleteImagesInput!
-    $condition: ModelImagesConditionInput
-  ) {
-    deleteImages(input: $input, condition: $condition) {
-      id
-      owner
-      name
-      description
-      online
-      Locations {
-        items {
-          id
-          locationsId
-          imagesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createImagesLocations = /* GraphQL */ `
-  mutation CreateImagesLocations(
-    $input: CreateImagesLocationsInput!
-    $condition: ModelImagesLocationsConditionInput
-  ) {
-    createImagesLocations(input: $input, condition: $condition) {
-      id
-      locationsId
-      imagesId
-      locations {
-        id
-        name
-        description
-        rules
-        images
-        imagess {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      images {
-        id
-        owner
-        name
-        description
-        online
-        Locations {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateImagesLocations = /* GraphQL */ `
-  mutation UpdateImagesLocations(
-    $input: UpdateImagesLocationsInput!
-    $condition: ModelImagesLocationsConditionInput
-  ) {
-    updateImagesLocations(input: $input, condition: $condition) {
-      id
-      locationsId
-      imagesId
-      locations {
-        id
-        name
-        description
-        rules
-        images
-        imagess {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      images {
-        id
-        owner
-        name
-        description
-        online
-        Locations {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteImagesLocations = /* GraphQL */ `
-  mutation DeleteImagesLocations(
-    $input: DeleteImagesLocationsInput!
-    $condition: ModelImagesLocationsConditionInput
-  ) {
-    deleteImagesLocations(input: $input, condition: $condition) {
-      id
-      locationsId
-      imagesId
-      locations {
-        id
-        name
-        description
-        rules
-        images
-        imagess {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      images {
-        id
-        owner
-        name
-        description
-        online
-        Locations {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
+      email
+      phone
     }
   }
 `;

@@ -1,35 +1,47 @@
-type Users @model @auth(rules: [{allow: public}]) {
-  id: ID! @primaryKey
-  login: String
-  name: String!
-  surename: String
-}
-
-type Reservations @model @auth(rules: [{allow: public}]) {
-  id: ID! 
-  locationID: ID!
-  userID: ID!
-  startDate: AWSDate!
-  endDate: AWSDate!
-  notes: String
-  Locations: Locations @hasOne
-  Users: Users @hasOne
-}
-
-type Locations @model @auth(rules: [{allow: public}]) {
-  id: ID! 
+type Apartment {
+  id: ID!
   name: String!
   description: String!
-  rules: String!
-  images: [ID]
-  imagess: [Images] @manyToMany(relationName: "ImagesLocations")
+  street: String!
+  streetNo: Int!
+  postalCode: String
+  city: String!
+  apartmentNo: Int
+  price: Float
+  capacity: Int
+  image: [String]
 }
 
-type Images @model @auth(rules: [{allow: public}]) {
-  id: ID! @primaryKey
-  owner: ID!
-  name: String
-  description: String
-  online: Boolean
-  Locations: [Locations] @manyToMany(relationName: "ImagesLocations")
+type Reservation {
+  id: ID!
+  apartment: Apartment!
+  guest: Guest!
+  startDate: String!
+  endDate: String!
 }
+
+type Guest {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String!
+}
+
+type Images {
+  id: ID!
+  name: String!
+  owner: String!
+}
+
+type Query {
+  apartments: [Apartment]
+  apartment(id: ID!): Apartment
+  reservations: [Reservation]
+  reservation(id: ID!): Reservation
+  guests: [Guest]
+  guest(id: ID!): Guest
+  listApartments: [Apartment]
+}
+
+type Mutation {
+    addApartment(  id: ID!, name: String!, description: String!, street: String!, streetNo: Int!, postalCode: String, city: String!, apartmentNo: Int, price: Float, capacity: Int, image: [String]): Apartment}

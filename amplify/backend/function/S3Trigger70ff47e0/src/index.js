@@ -3,17 +3,19 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 var ddb = new AWS.DynamoDB();
 
-let imageTable = "Images-zos4gezxavdzdpcon7e57zhms4-dev";
+let imageTable = "ImagesTable";
 
 
-/*
+
 exports.handler = async function (event, callback) {
   console.log('Received S3 event:', JSON.stringify(event, null, 2));
+  console.log("Bucket: " + event.Records[0].s3.bucket.name);
+  console.log("Key: " + event.Records[0].s3.object.key);
   const bucket = event.Records[0].s3.bucket.name;
   const key = event.Records[0].s3.object.key;
-  console.log(`Bucket: ${bucket}`, `Key: ${key}`);
+  
 };
-*/
+
 function removeImageS3(key, bucket) {
   let params = { Bucket: bucket, Key: key };
   s3.deleteObject(params, function (err, data) {
