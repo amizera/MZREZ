@@ -25,12 +25,12 @@ import { createApartment } from '../../graphql/mutations';
 var apartamentToDel = ''
 const boxMargin = 1;
 const apartmenty = await API.graphql({ query: queries.apartments });
-
+console.log(apartmenty)
 
 export default function Lacalizations() {
 
   const [apartments, setApartments] = React.useState(
-    apartmenty.data.listApartments.items || []
+    //apartmenty.data.listApartments.items || []
   )
 
   const handleAddApartments = async value => {
@@ -73,8 +73,9 @@ export default function Lacalizations() {
   React.useEffect(() => {
     async function getApartments() {
       const res = await API.graphql({ query: queries.apartments })
-      const data = res.data.listApartments.items
-      setApartments(data)
+      console.log(res)
+      //const data = res.data.listApartments.items
+      //setApartments(data)
     }
     getApartments()
   }, [])

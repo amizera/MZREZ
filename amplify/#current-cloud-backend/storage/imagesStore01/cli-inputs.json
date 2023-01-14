@@ -1,0 +1,16 @@
+{
+  "resourceName": "imagesStore01",
+  "policyUUID": "e2b7825e",
+  "bucketName": "mzrezimages01",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Trigger70ff47e0",
+  "groupAccess": {}
+}
