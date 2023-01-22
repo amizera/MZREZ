@@ -11,3 +11,11 @@ type Apartment @model @auth(rules: [{ allow: public }]) {
   capacity: Int
   images: [String]
 }
+
+type Reservations @model @auth(rules: [{ allow: public}]) {
+  id: ID!
+  startDate: 
+  endDate:
+  aparmentId:
+  clientId:
+}
