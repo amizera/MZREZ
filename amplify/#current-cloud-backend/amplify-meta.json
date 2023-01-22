@@ -12,37 +12,59 @@
       "AmplifyAppId": "d6pyr478ajh8n"
     }
   },
-  "auth": {
-    "mzrezb0342839": {
-      "service": "Cognito",
+  "api": {
+    "mzrez": {
+      "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            }
+          },
+          "additionalAuthenticationProviders": []
+        },
+        "GraphQLAPIIdOutput": "m4cxfwwwfbe4tok4cyue56o2bm",
+        "GraphQLAPIEndpointOutput": "https://jjnahn6xpnenlpun36mcgcf45i.appsync-api.eu-central-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-djqbtorvsbbw7aron67hdnpdxu"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apimzrez"
+      },
+      "lastPushTimeStamp": "2023-01-20T08:08:43.400Z",
+      "lastPushDirHash": "55PkA5cldHwe5tKmcLkEjUifOG4="
+    }
+  },
+  "auth": {
+    "mzrezb0342839": {
       "customAuth": false,
+      "dependsOn": [],
       "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
-        "signupAttributes": [
-          "EMAIL"
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,
           "passwordPolicyCharacters": []
         },
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
         ],
         "verificationMechanisms": [
           "EMAIL"
         ]
       },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/auth/mzrezb0342839-cloudformation-template.json",
-        "logicalId": "authmzrezb0342839"
-      },
-      "lastPushTimeStamp": "2023-01-14T13:22:54.740Z",
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
       "output": {
         "UserPoolId": "eu-central-1_DGRVZO8Mb",
         "AppClientIDWeb": "267a5qgci2djfasa20c6dprbl",
@@ -52,57 +74,74 @@
         "IdentityPoolName": "mzrezb0342839_identitypool_b0342839__dev",
         "UserPoolName": "mzrezb0342839_userpool_b0342839"
       },
-      "lastPushDirHash": "U4s69kLWkTQWBx5gqJFPzk2KMTs="
+      "lastPushTimeStamp": "2023-01-20T08:08:43.402Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/auth/mzrezb0342839-cloudformation-template.json",
+        "logicalId": "authmzrezb0342839"
+      }
     }
   },
-  "api": {
-    "mzrez": {
-      "service": "AppSync",
+  "function": {
+    "S3Trigger70ff47e0": {
+      "build": true,
       "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::689860375293:role/S3Trigger70ff47e0LambdaRole70ff47e0-dev",
+        "Region": "eu-central-1",
+        "Arn": "arn:aws:lambda:eu-central-1:689860375293:function:S3Trigger70ff47e0-dev",
+        "Name": "S3Trigger70ff47e0-dev",
+        "LambdaExecutionRole": "S3Trigger70ff47e0LambdaRole70ff47e0-dev"
+      },
+      "lastPushTimeStamp": "2023-01-20T08:08:43.404Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/function/S3Trigger70ff47e0-cloudformation-template.json",
+        "logicalId": "functionS3Trigger70ff47e0"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
+        "s3Key": "amplify-builds/S3Trigger70ff47e0-57524e4850436a374143-build.zip"
+      }
+    },
+    "RemoveS3Images": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
       "dependsOn": [
         {
-          "category": "auth",
-          "resourceName": "mzrezb0342839",
+          "category": "api",
+          "resourceName": "mzrez",
           "attributes": [
-            "UserPoolId"
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
           ]
         }
       ],
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authmzrezb0342839"
-            }
-          },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "API_KEY",
-              "apiKeyConfig": {
-                "apiKeyExpirationDays": 365,
-                "apiKeyExpirationDate": "2023-12-09T10:26:54.332Z",
-                "description": "firstQL"
-              }
-            }
-          ]
-        },
-        "GraphQLAPIIdOutput": "zos4gezxavdzdpcon7e57zhms4",
-        "GraphQLAPIEndpointOutput": "https://diwyeox3wnacbbcl4nc6ozao6q.appsync-api.eu-central-1.amazonaws.com/graphql",
-        "GraphQLAPIKeyOutput": "da2-7fcwz6zo5zf7pcbijcu6amqjs4"
+      "lastBuildTimeStamp": "2023-01-20T08:07:06.310Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-01-20T08:07:06.328Z",
+      "distZipFilename": "RemoveS3Images-454767424779636a5632-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
+        "s3Key": "amplify-builds/RemoveS3Images-454767424779636a5632-build.zip"
       },
-      "lastPushTimeStamp": "2023-01-14T13:22:55.186Z",
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-        "logicalId": "apimzrez"
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/function/RemoveS3Images-cloudformation-template.json",
+        "logicalId": "functionRemoveS3Images"
       },
-      "lastPushDirHash": "p6KV5ODvk8tFySAf+qVPONmLmD4="
+      "lastPushTimeStamp": "2023-01-20T08:08:43.842Z",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::689860375293:role/mzrezLambdaRolefa3328a6-dev",
+        "Region": "eu-central-1",
+        "Arn": "arn:aws:lambda:eu-central-1:689860375293:function:RemoveS3Images-dev",
+        "Name": "RemoveS3Images-dev",
+        "LambdaExecutionRole": "mzrezLambdaRolefa3328a6-dev"
+      },
+      "lastPushDirHash": "yuUMd+wwO/yIXfOJhegjYMqaN8U="
     }
   },
   "storage": {
     "imagesStore01": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "function",
@@ -114,44 +153,17 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2023-01-14T13:22:54.744Z",
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
-        "logicalId": "storageimagesStore01"
-      },
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
       "output": {
         "BucketName": "mzrezimages01124634-dev",
         "Region": "eu-central-1"
       },
-      "lastPushDirHash": "cDXfj5L1b8fmrzWMAHXpAIQoSXE="
-    }
-  },
-  "function": {
-    "S3Trigger70ff47e0": {
-      "service": "Lambda",
-      "providerPlugin": "awscloudformation",
-      "build": true,
-      "lastBuildTimeStamp": "2023-01-09T07:03:48.381Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2023-01-09T07:03:48.408Z",
-      "distZipFilename": "S3Trigger70ff47e0-57524e4850436a374143-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
-        "s3Key": "amplify-builds/S3Trigger70ff47e0-57524e4850436a374143-build.zip"
-      },
+      "lastPushTimeStamp": "2023-01-20T08:08:43.407Z",
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/function/S3Trigger70ff47e0-cloudformation-template.json",
-        "logicalId": "functionS3Trigger70ff47e0"
-      },
-      "lastPushTimeStamp": "2023-01-14T13:22:54.745Z",
-      "output": {
-        "Region": "eu-central-1",
-        "Arn": "arn:aws:lambda:eu-central-1:689860375293:function:S3Trigger70ff47e0-dev",
-        "Name": "S3Trigger70ff47e0-dev",
-        "LambdaExecutionRole": "S3Trigger70ff47e0LambdaRole70ff47e0-dev",
-        "LambdaExecutionRoleArn": "arn:aws:iam::689860375293:role/S3Trigger70ff47e0LambdaRole70ff47e0-dev"
-      },
-      "lastPushDirHash": "n4NWdyHj6IB2wi0KbsZdy8EmX4g="
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storageimagesStore01"
+      }
     }
   }
 }

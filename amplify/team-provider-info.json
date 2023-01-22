@@ -22,6 +22,10 @@
         "S3Trigger70ff47e0": {
           "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
           "s3Key": "amplify-builds/S3Trigger70ff47e0-57524e4850436a374143-build.zip"
+        },
+        "RemoveS3Images": {
+          "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
+          "s3Key": "amplify-builds/RemoveS3Images-454767424779636a5632-build.zip"
         }
       },
       "api": {

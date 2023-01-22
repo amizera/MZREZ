@@ -1,32 +1,15 @@
 {
   "api": {
     "mzrez": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "mzrezb0342839"
-        }
-      ],
+      "dependsOn": [],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "apiKeyConfig": {
-                "apiKeyExpirationDate": "2023-12-09T10:26:54.332Z",
-                "apiKeyExpirationDays": 365,
-                "description": "firstQL"
-              },
-              "authenticationType": "API_KEY"
-            }
-          ],
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authmzrezb0342839"
-            }
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            },
+            "authenticationType": "API_KEY"
           }
         }
       },
@@ -63,6 +46,21 @@
     }
   },
   "function": {
+    "RemoveS3Images": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "mzrez"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "S3Trigger70ff47e0": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -70,6 +68,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_RemoveS3Images_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "RemoveS3Images"
+        }
+      ]
+    },
+    "AMPLIFY_function_RemoveS3Images_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "RemoveS3Images"
+        }
+      ]
+    },
     "AMPLIFY_function_S3Trigger70ff47e0_deploymentBucketName": {
       "usedBy": [
         {

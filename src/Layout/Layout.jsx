@@ -5,7 +5,7 @@ import { Menu as MenuIcon, Person as PersonIcon, Help } from '@mui/icons-materia
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import './Layout.scss';
-import { LacalizationsRoute, HomeRoute } from '../Routing';
+import { LacalizationsRoute, HomeRoute, ReservationsRoute } from '../Routing';
 import { Link } from "react-router-dom";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -115,6 +115,14 @@ import { Flex } from '@aws-amplify/ui-react';
                             </ListItemIcon>
                             <ListItemText primary="Lokalizacje" />
                         </ListItem>
+                        <ListItem 
+                        button component={Link} to={ReservationsRoute} 
+                        onClick={mobileOpen ? this.handleDrawerToggle : null}>
+                            <ListItemIcon>
+                                <PersonIcon sx={{ color: theme.palette.primary.main}}/>
+                            </ListItemIcon>
+                            <ListItemText primary="Reservations" />
+                        </ListItem>
                         <Divider />
                         {
                         isLogged ?
@@ -200,7 +208,7 @@ import { Flex } from '@aws-amplify/ui-react';
                                     </Box>
                                 </Box>
 
-                                <Box className="mainContent" maxWidth='md' style={{ borderRadius: 5, padding: 0}} sx={{  ml: { xs: 2, md: (drawerWidth/8)+2 }, mr: 2, mt: {xs:9, md: 2} }} >
+                                <Box className="mainContent"  style={{ borderRadius: 5, padding: 0}} sx={{  ml: { xs: 2, md: (drawerWidth/8)+2 }, mr: 2, mt: {xs:9, md: 2} }} >
                                     
                                         {this.props.children}
                                     

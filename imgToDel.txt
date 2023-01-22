@@ -1,0 +1,4 @@
+{
+  Bucket: 'mzrezimages01124634-dev',
+  Key: 'protected/eu-central-1:7ad2b216-94e9-489d-96d2-8bba7de90032/dsc_0225-1804ce82-8831-4b56-9bb5-550b0f669617.JPG'
+}

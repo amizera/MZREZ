@@ -8,6 +8,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -16,6 +17,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import {ImageBox} from '../../Components/CustomBoxes/CustomBoxes';
 
 import { useAuthenticator, withAuthenticator } from '@aws-amplify/ui-react';
 
@@ -51,6 +53,17 @@ export default function ListLocalizations(props) {
     setOpen(false);
   };
 
+  const coverThumb = (  
+  function makeThumb() {
+    const filename = props.cover.toLowerCase().replace(/\.[^/.]+$/, "")
+    const fileExtension = props.cover.split('.').pop();
+    
+    let thumbnailImgName = filename + '-thumbnail.' + fileExtension;
+    return thumbnailImgName
+  }
+  )
+
+
   return (
     <Paper
     sx={{
@@ -69,7 +82,23 @@ export default function ListLocalizations(props) {
       <Grid container spacing={2} >
         <Grid item>
           <ButtonBase sx={{ width: 120, height: 120 }}>
-            <Img alt={props.cover} src={"http://mzrezimages01124634-dev.s3-website.eu-central-1.amazonaws.com/protected/eu-central-1:7ad2b216-94e9-489d-96d2-8bba7de90032/"+props.cover+"-thumbnail.jpg"} />
+            <Img 
+                className='square content' 
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+            sx={{
+              bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#101010' : '#fff'),
+              color: (theme) => (theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800'),
+              border: '1px solid',
+              borderColor: (theme) =>
+                theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
+              p: 0,
+              m: 0,
+              borderRadius: 2,
+
+            }}
+            alt={props.cover} src={"http://mzrezimages01124634-dev.s3-website.eu-central-1.amazonaws.com/protected/eu-central-1:7ad2b216-94e9-489d-96d2-8bba7de90032/"+coverThumb()} />
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>

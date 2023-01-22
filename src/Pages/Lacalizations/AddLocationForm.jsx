@@ -9,35 +9,14 @@ import TextField from '@mui/material/TextField';
 import { v4 as uuid } from 'uuid';
 import { Storage, Auth } from 'aws-amplify';
 import {ImageBox} from '../../Components/CustomBoxes/CustomBoxes';
+import PropTypes from 'prop-types';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { Amplify, API, graphqlOperation } from 'aws-amplify';
 import awsconfig from '../../aws-exports';
 Amplify.configure(awsconfig);
 
 export default function AddLocationForm(props) {
-
-  
-  const [apartment, setApartment] = React.useState(
-    {
-      id: "",
-      name: "",
-      description: "",
-      street: "",
-      streetNo: "",
-      apartmentNo: "",
-      price: "",
-      capacity: "",
-      images: [{ imgFilname: "", imgFile: ""},{ imgFilname: "", imgFile: ""},{ imgFilname: "", imgFile: ""}]
-    }
-  )
-
-  function handleEditAparmet(key, value, filename, index) {
-    if (!index) {
-      setApartment(prevApartment => ({ ...prevApartment, [key]: value }));
-    } else {
-      setApartment(prevApartment => ({ ...prevApartment, [key]: prevApartment[key].map((obj, imagesIndex) =>  imagesIndex == index ?  {imgFilname: filename, imgFile: value} : obj) }))
-    }
-  }
 
   const Img = styled('img')({
     margin: 'auto',
@@ -48,30 +27,37 @@ export default function AddLocationForm(props) {
 
   const boxMargin = 2
   const tmp_path = ""
-
+  var img = null
   const id = React.useId(); 
   const [file, setFile] = React.useState();
   const [uploading, setUploading] = React.useState(false);
   const [imgToUpload, setImgToUpload] = React.useState(0);
   const [imgUploaded, setImgUploaded] = React.useState(0);
-  var img = null
+  
 
-  function getCurrentUsername() {
-      return new Promise((resolve, reject) => {
-          Auth.currentAuthenticatedUser()
-          .then(user => {
-              if (user.username) {
-                  resolve(user.username)
-              } else {
-                  resolve(null)
-              }
-          })
-          .catch(err => {
-              console.log(err)
-              resolve(null)
-          });
-      })
+  function LinearProgressWithLabel(props) {
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ width: '100%', mr: 1 }}>
+          <LinearProgress variant="determinate" {...props} />
+        </Box>
+        <Box sx={{ minWidth: 35 }}>
+          <Typography variant="body2" color="text.secondary">{`${Math.round(
+            props.value,
+          )}%`}</Typography>
+        </Box>
+      </Box>
+    );
   }
+
+  LinearProgressWithLabel.propTypes = {
+    /**
+     * The value of the progress indicator for the determinate and buffer variants.
+     * Value between 0 and 100.
+     */
+    value: PropTypes.number.isRequired,
+  };
+
 
   function readFileAsync(file) {
       return new Promise((resolve, reject) => {
@@ -95,108 +81,7 @@ export default function AddLocationForm(props) {
       })
   }
 
-  function imgToBlobAsync(img, canvas) {
-      return new Promise((resolve, reject) => {
-          const ctxMain = canvas.getContext('2d');
-          ctxMain.drawImage(img, 0, 0, canvas.width, canvas.height);
-          ctxMain.canvas.toBlob(async (blob) => {
-              resolve(blob)
-          }, 'image/*');
-      })
-  }
 
-  function createCanvas(img, maxSize) {
-      const canvas = document.createElement('canvas');
-      if (img.width > img.height) {
-      const widthMain = maxSize;
-      const scaleFactorMain = widthMain / img.width;
-      canvas.width = widthMain;
-      canvas.height = img.height * scaleFactorMain;
-      } else {
-      const heightMain = maxSize;
-      const scaleFactorMain = heightMain / img.height;
-      canvas.width = img.width * scaleFactorMain;
-      canvas.height = heightMain;
-      }
-      return canvas
-  }
-
-  async function pushImgToS3(uri, filename) {
-    if (uri === null) return
-    await Storage.put(filename, uri, {
-        level: 'protected',
-        contentType: 'image/*',
-        progressCallback(progress) {
-            console.log(`Uploaded: ${progress.loaded}/${progress.total} or % ${(progress.loaded/progress.total)*100}`);
-        }
-    })
-        .then(result => console.log("result.key: " + result.key))
-        .catch(err => console.log(err));
-}
-
-  async function handleUpload() {
-    //event.persist();
-    // Check there is some files to upload
-    if (!apartment || !apartment.images) return
-    
-    const filesLength = apartment.images.length;
-    const username = await getCurrentUsername();
-    
-    setUploading(true)
-    setImgToUpload(filesLength)
-  
-    // Loop through all selected files 
-    for (let i = 0; i < filesLength; i++) {
-        setImgUploaded(i+1)
-        
-        const file = apartment.images[i];
-        
-        const filename = file.imgFilname.toLowerCase().replace(/\.[^/.]+$/, "").replace(/ /g, '-').replace(/[^\w-]+/g, '');
-        const fileExtension = file.imgFilname.split('.').pop();
-        // Define the image name
-        const rootName = /* username + '/' +*/ filename + '-' + uuid();
-        //let mainImgName = filename + '-' + uuid() + '.' + fileExtension;
-        let mainImgName = rootName + '.' + fileExtension;
-        let thumbnailImgName = rootName + '-thumbnail.' + fileExtension;
-        
-        // Read the image
-        //const imgSrc = await this.readFileAsync(file);
-        const img = await loadImgAsync(apartment.images[i].imgFile);
-
-        // From the image and a canvas (for the resize), 
-        // generate a blob to be uploaded
-        const canvas = createCanvas(img, 1000);
-        const imgBlob = await imgToBlobAsync(img, canvas);
-
-        // Same with the thumbnail
-        const canvasThumb = createCanvas(img, 100)
-        const imgBlobThumb = await imgToBlobAsync(img, canvasThumb)
-        
-        // Create a file from the blob
-        const fileMain = new File([imgBlob], filename, {
-            type: 'image/*',
-        lastModified: Date.now()
-        })
-
-        const fileThumb = new File([imgBlobThumb], filename, {
-            type: 'image/*',
-           lastModified: Date.now()
-        });
-
-        // Push the image to S3
-        await pushImgToS3(fileThumb, thumbnailImgName)
-        await pushImgToS3(fileMain, mainImgName)
-        apartment.images[i].imgFilname = rootName
-    }
-
-    //const apartament2upload = {capacity: 4, description: apartment.description, image: [apartment.images[0].imgFilname, apartment.images[1].imgFilname, apartment.images[2].imgFilname]  , location: "zp", name: apartment.name, price: 1.5}
-    props.handleAddApartments(apartment)
-
-    setUploading(false)
-    setImgToUpload(0)
-    setImgToUpload(0)
-
-  }   
 
   async function handleImage(e, index) { 
 
@@ -216,26 +101,13 @@ export default function AddLocationForm(props) {
  
     const {name, value} = e.target
     //props.updateLocation(name, imgSrc, filename, index)
-    handleEditAparmet(name, imgSrc, filename, index)
+    props.handleEditAparmet(name, imgSrc, filename, index)
       
   }
 
-  function handleChange(event) {
-    const {name, value} = event.target
-    setApartment(prevApartment => ({ ...prevApartment, [name]: value }))
-  }
 
   return (
-    <Paper
-    sx={{
-      p: 2,
-      margin: 'auto',
-      maxWidth: 1000,
-      flexGrow: 1,
-      backgroundColor: (theme) =>
-      theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    }}
-    >
+
                       
       <Box
       component="form"
@@ -250,10 +122,10 @@ export default function AddLocationForm(props) {
             id="standard-required"
             //label="Nazwa"
             placeholder="Nazwij lokalizację"
-            defaultValue={apartment.name}
+            //defaultValue={props.apartment.name}
             variant="standard"
             name="name"
-            onChange={handleChange}
+            onChange={(event)=>props.handleChange(event, name)}
           />
         </Box>
 
@@ -270,14 +142,14 @@ export default function AddLocationForm(props) {
             placeholder="Dodaj opis"
             multiline
             rows={7}
-            defaultValue={apartment.description}
+            //defaultValue={props.apartment.description}
             name="description"
-            onChange={handleChange}
+            onChange={(event)=>props.handleChange(event, name)}
           />
         </Box>
         <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid container spacing={1}>
+        <Grid item xs={7}>
           <TextField
             fullWidth 
             sx={{ mr: 2 }}
@@ -286,9 +158,9 @@ export default function AddLocationForm(props) {
             //label="Ulica"
             placeholder="Ulica"
             //rows={4}
-            defaultValue={apartment.street}
+            //defaultValue={props.apartment.street}
             name="street"
-            onChange={handleChange}
+            onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
           <Grid item xs={2}>
@@ -300,12 +172,12 @@ export default function AddLocationForm(props) {
             //label="Nr"
             placeholder="Nr"
             //rows={4}
-            defaultValue={apartment.streetNo}
+            //defaultValue={props.apartment.streetNo}
             name="streetNo"
-            onChange={handleChange}
+            onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
           <TextField
             fullWidth 
             sx={{  }}
@@ -313,9 +185,9 @@ export default function AddLocationForm(props) {
             //label="Numer Apartamentu"
             placeholder="Nr ap."
             //rows={4}
-            defaultValue={apartment.locationNo}
-            name="apartmentNo"
-            onChange={handleChange}
+            //defaultValue={props.apartment.locationNo}
+            name="props.apartmentNo"
+            onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
           </Grid>
@@ -323,7 +195,7 @@ export default function AddLocationForm(props) {
 
         <Box sx={{ flexGrow: 1, mt:2 }}>
         <Grid container spacing={2}>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
 
           <TextField
             fullWidth 
@@ -333,20 +205,20 @@ export default function AddLocationForm(props) {
             required
             placeholder="Kod Pocztowy"
             rows={4}
-            defaultValue={apartment.postalCode}
+            //defaultValue={props.apartment.postalCode}
             name="postalCode"
-            onChange={handleChange}
+            onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={5}>
           <TextField
             fullWidth 
             sx={{ mr: 3}}
             id="outlined-multiline-static"
             placeholder="Miejscowość"
-            defaultValue={apartment.postalCode}
+            //defaultValue={props.apartment.postalCode}
             name="postalCode"
-            onChange={handleChange}
+            onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
         <Grid item xs={2}>
@@ -357,9 +229,9 @@ export default function AddLocationForm(props) {
             placeholder="Ilość miejsc"
             
             //rows={4}
-            defaultValue={apartment.postalCode}
+            //defaultValue={props.apartment.postalCode}
             name="postalCode"
-            onChange={handleChange}
+            onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
                   <Grid item xs={2}>
@@ -370,9 +242,9 @@ export default function AddLocationForm(props) {
             placeholder="Cena"
             
             //rows={4}
-            defaultValue={apartment.postalCode}
+            //defaultValue={props.apartment.postalCode}
             name="postalCode"
-            onChange={handleChange}
+            onChange={(event)=>props.handleChange(event, name)}
           />
 
           </Grid>
@@ -389,27 +261,16 @@ export default function AddLocationForm(props) {
         </Box>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', justifyContent: 'space-between'  }} >
           
-          <ImageBox handleImage={handleImage} location={apartment} imageOrder="0"/>
-          <ImageBox handleImage={handleImage} location={apartment} imageOrder="1"/>
-          <ImageBox handleImage={handleImage} location={apartment} imageOrder="2"/>
+          <ImageBox handleImage={handleImage} location={props.apartment} imageOrder="0"/>
+          <ImageBox handleImage={handleImage} location={props.apartment} imageOrder="1"/>
+          <ImageBox handleImage={handleImage} location={props.apartment} imageOrder="2"/>
           
         </Box>  
+        <Box sx={{ width: '100%', mt: 2 }}>
+          <LinearProgressWithLabel color="secondary" value={props.progress} />
+        </Box>
       </Box>
 
-      <Box  style={{ borderRadius: 5,  padding: 10, marginTop: 20}} >
-        <Button variant="contained"
-          size="medium"
-          color="secondary"
-          component="span"
-          onClick={handleUpload}
-          disabled={uploading}
-        >
-          <Typography  variant="h6" >dodaj</Typography>
-        </Button>
-                  
-      </Box>
-
-    </Paper>
   )
 }
 

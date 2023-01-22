@@ -152,6 +152,20 @@
         }
       }
     },
+    "apimzrez": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "Parameters": {
+          "AppSyncApiName": "mzrez",
+          "DynamoDBBillingMode": "PAY_PER_REQUEST",
+          "DynamoDBEnableServerSideEncryption": false,
+          "S3DeploymentBucket": "amplify-mzrez-dev-124634-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/9be214f85005bd3dafcdaf21b4c8efcaf1d8940f",
+          "env": "dev"
+        }
+      }
+    },
     "authmzrezb0342839": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -206,22 +220,36 @@
         }
       }
     },
-    "apimzrez": {
+    "functionS3Trigger70ff47e0": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/function/S3Trigger70ff47e0-cloudformation-template.json",
         "Parameters": {
-          "AppSyncApiName": "mzrez",
-          "DynamoDBBillingMode": "PAY_PER_REQUEST",
-          "DynamoDBEnableServerSideEncryption": false,
-          "AuthCognitoUserPoolId": {
+          "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
+          "s3Key": "amplify-builds/S3Trigger70ff47e0-57524e4850436a374143-build.zip",
+          "env": "dev"
+        }
+      }
+    },
+    "functionRemoveS3Images": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/function/RemoveS3Images-cloudformation-template.json",
+        "Parameters": {
+          "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
+          "s3Key": "amplify-builds/RemoveS3Images-454767424779636a5632-build.zip",
+          "apimzrezGraphQLAPIIdOutput": {
             "Fn::GetAtt": [
-              "authmzrezb0342839",
-              "Outputs.UserPoolId"
+              "apimzrez",
+              "Outputs.GraphQLAPIIdOutput"
             ]
           },
-          "S3DeploymentBucket": "amplify-mzrez-dev-124634-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/2ee94a44cc4706f342c09173e1d1b7840927965b",
+          "apimzrezGraphQLAPIEndpointOutput": {
+            "Fn::GetAtt": [
+              "apimzrez",
+              "Outputs.GraphQLAPIEndpointOutput"
+            ]
+          },
           "env": "dev"
         }
       }
@@ -274,17 +302,6 @@
               "Outputs.LambdaExecutionRole"
             ]
           },
-          "env": "dev"
-        }
-      }
-    },
-    "functionS3Trigger70ff47e0": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-mzrez-dev-124634-deployment/amplify-cfn-templates/function/S3Trigger70ff47e0-cloudformation-template.json",
-        "Parameters": {
-          "deploymentBucketName": "amplify-mzrez-dev-124634-deployment",
-          "s3Key": "amplify-builds/S3Trigger70ff47e0-57524e4850436a374143-build.zip",
           "env": "dev"
         }
       }

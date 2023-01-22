@@ -10,41 +10,9 @@ type Apartment {
   apartmentNo: Int
   price: Float
   capacity: Int
-  image: [String]
-}
-
-type Reservation {
-  id: ID!
-  apartment: Apartment!
-  guest: Guest!
-  startDate: String!
-  endDate: String!
-}
-
-type Guest {
-  id: ID!
-  name: String!
-  email: String!
-  phone: String!
-}
-
-type Images {
-  id: ID!
-  name: String!
-  owner: String!
-}
-
-type Query {
-  apartments: [Apartment]
-  apartment(id: ID!): Apartment
-  reservations: [Reservation]
-  reservation(id: ID!): Reservation
-  guests: [Guest]
-  guest(id: ID!): Guest
-}
-
-type Mutation {
-  addApartment(id: ID!, name: String!, description: String!, street: String!, streetNo: Int!, postalCode: String, city: String!, apartmentNo: Int, price: Float, capacity: Int, image: [String]): Apartment
+  images: [String]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 input ModelStringInput {
@@ -195,5 +163,108 @@ input ModelSizeInput {
 enum ModelSortDirection {
   ASC
   DESC
+}
+
+type ModelApartmentConnection {
+  items: [Apartment]!
+  nextToken: String
+}
+
+input ModelApartmentFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  street: ModelStringInput
+  streetNo: ModelIntInput
+  postalCode: ModelStringInput
+  city: ModelStringInput
+  apartmentNo: ModelIntInput
+  price: ModelFloatInput
+  capacity: ModelIntInput
+  images: ModelStringInput
+  and: [ModelApartmentFilterInput]
+  or: [ModelApartmentFilterInput]
+  not: ModelApartmentFilterInput
+}
+
+type Query {
+  getApartment(id: ID!): Apartment
+  listApartments(filter: ModelApartmentFilterInput, limit: Int, nextToken: String): ModelApartmentConnection
+}
+
+input ModelApartmentConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  street: ModelStringInput
+  streetNo: ModelIntInput
+  postalCode: ModelStringInput
+  city: ModelStringInput
+  apartmentNo: ModelIntInput
+  price: ModelFloatInput
+  capacity: ModelIntInput
+  images: ModelStringInput
+  and: [ModelApartmentConditionInput]
+  or: [ModelApartmentConditionInput]
+  not: ModelApartmentConditionInput
+}
+
+input CreateApartmentInput {
+  id: ID
+  name: String!
+  description: String!
+  street: String!
+  streetNo: Int!
+  postalCode: String
+  city: String!
+  apartmentNo: Int
+  price: Float
+  capacity: Int
+  images: [String]
+}
+
+input UpdateApartmentInput {
+  id: ID!
+  name: String
+  description: String
+  street: String
+  streetNo: Int
+  postalCode: String
+  city: String
+  apartmentNo: Int
+  price: Float
+  capacity: Int
+  images: [String]
+}
+
+input DeleteApartmentInput {
+  id: ID!
+}
+
+type Mutation {
+  createApartment(input: CreateApartmentInput!, condition: ModelApartmentConditionInput): Apartment
+  updateApartment(input: UpdateApartmentInput!, condition: ModelApartmentConditionInput): Apartment
+  deleteApartment(input: DeleteApartmentInput!, condition: ModelApartmentConditionInput): Apartment
+}
+
+input ModelSubscriptionApartmentFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  street: ModelSubscriptionStringInput
+  streetNo: ModelSubscriptionIntInput
+  postalCode: ModelSubscriptionStringInput
+  city: ModelSubscriptionStringInput
+  apartmentNo: ModelSubscriptionIntInput
+  price: ModelSubscriptionFloatInput
+  capacity: ModelSubscriptionIntInput
+  images: ModelSubscriptionStringInput
+  and: [ModelSubscriptionApartmentFilterInput]
+  or: [ModelSubscriptionApartmentFilterInput]
+}
+
+type Subscription {
+  onCreateApartment(filter: ModelSubscriptionApartmentFilterInput): Apartment @aws_subscribe(mutations: ["createApartment"])
+  onUpdateApartment(filter: ModelSubscriptionApartmentFilterInput): Apartment @aws_subscribe(mutations: ["updateApartment"])
+  onDeleteApartment(filter: ModelSubscriptionApartmentFilterInput): Apartment @aws_subscribe(mutations: ["deleteApartment"])
 }
 

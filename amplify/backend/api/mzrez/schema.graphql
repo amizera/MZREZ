@@ -1,4 +1,4 @@
-type Apartment {
+type Apartment @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String!
   description: String!
@@ -9,39 +9,5 @@ type Apartment {
   apartmentNo: Int
   price: Float
   capacity: Int
-  image: [String]
+  images: [String]
 }
-
-type Reservation {
-  id: ID!
-  apartment: Apartment!
-  guest: Guest!
-  startDate: String!
-  endDate: String!
-}
-
-type Guest {
-  id: ID!
-  name: String!
-  email: String!
-  phone: String!
-}
-
-type Images {
-  id: ID!
-  name: String!
-  owner: String!
-}
-
-type Query {
-  apartments: [Apartment]
-  apartment(id: ID!): Apartment
-  reservations: [Reservation]
-  reservation(id: ID!): Reservation
-  guests: [Guest]
-  guest(id: ID!): Guest
-}
-
-type Mutation {
-    addApartment(  id: ID!, name: String!, description: String!, street: String!, streetNo: Int!, postalCode: String, city: String!, apartmentNo: Int, price: Float, capacity: Int, image: [String]): Apartment
-    }
