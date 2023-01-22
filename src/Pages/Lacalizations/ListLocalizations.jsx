@@ -107,13 +107,10 @@ export default function ListLocalizations(props) {
           <Grid item xs container direction="column" spacing={2}>
             <Grid item xs>
               <Typography gutterBottom variant="subtitle1" component="div">
-                id: {props.id}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                name: {props.name}
+                {props.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                dsc: {props.description}
+                {props.description}
               </Typography>
             </Grid>
 
