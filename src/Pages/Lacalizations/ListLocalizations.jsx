@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import {Link} from "react-router-dom"
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -80,8 +81,8 @@ export default function ListLocalizations(props) {
     
     >
       <Grid container spacing={2} >
-        <Grid item>
-          <ButtonBase sx={{ width: 120, height: 120 }}>
+        <Grid item><Link to={`/rezerwacje/${props.id}`}>
+          <ButtonBase sx={{ width: 120, height: 120 }} >
             <Img 
                 className='square content' 
                 display="flex"
@@ -100,6 +101,7 @@ export default function ListLocalizations(props) {
             }}
             alt={props.cover} src={"http://mzrezimages01124634-dev.s3-website.eu-central-1.amazonaws.com/protected/eu-central-1:7ad2b216-94e9-489d-96d2-8bba7de90032/"+coverThumb()} />
           </ButtonBase>
+          </Link>
         </Grid>
         <Grid item xs={12} sm container>
           <Grid item xs container direction="column" spacing={2}>

@@ -136,7 +136,7 @@ export default function Lacalizations() {
     }
   }
 
-  const [currentApartmentsId, setCurrentApartmentsId] = React.useState(
+const [currentApartmentsId, setCurrentApartmentsId] = React.useState(
     (apartments[0] && apartments[0].id) || ""
 )
 

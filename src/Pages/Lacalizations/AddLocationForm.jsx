@@ -186,7 +186,7 @@ export default function AddLocationForm(props) {
             placeholder="Nr ap."
             //rows={4}
             //defaultValue={props.apartment.locationNo}
-            name="props.apartmentNo"
+            name="apartmentNo"
             onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
@@ -217,7 +217,7 @@ export default function AddLocationForm(props) {
             id="outlined-multiline-static"
             placeholder="Miejscowość"
             //defaultValue={props.apartment.postalCode}
-            name="postalCode"
+            name="city"
             onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
@@ -230,7 +230,7 @@ export default function AddLocationForm(props) {
             
             //rows={4}
             //defaultValue={props.apartment.postalCode}
-            name="postalCode"
+            name="capacity"
             onChange={(event)=>props.handleChange(event, name)}
           />
           </Grid>
@@ -243,7 +243,7 @@ export default function AddLocationForm(props) {
             
             //rows={4}
             //defaultValue={props.apartment.postalCode}
-            name="postalCode"
+            name="price"
             onChange={(event)=>props.handleChange(event, name)}
           />
 

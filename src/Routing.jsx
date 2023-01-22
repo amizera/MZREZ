@@ -8,7 +8,7 @@ import Layout from './Layout/Layout';
 
 export const HomeRoute = "/";
 export const LacalizationsRoute = "/lokalizacje/";
-export const ReservationsRoute = "/rezerwacje/"
+export const ReservationsRoute = "/rezerwacje/:apartmentId"
 
 class Routing extends React.Component {
     render() {
